@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Pomodoro Timer ⏱️</h1>
+
+    <!-- ✅ Task Input -->
+    <input type="text" id="task" placeholder="Enter your task..." />
+
+    <h2 id="timer">25:00</h2>
+
+    <h3 id="taskDisplay"></h3>
+
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+</div>
+
+<script>
+let time = 25 * 60;
+let timerInterval;
+
+function startTimer() {
+    let task = document.getElementById("task").value;
+
+    if(task === "") {
+        alert("Please enter a task!");
+        return;
+    }
+
+    document.getElementById("taskDisplay").innerText = "Task: " + task;
+
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        let minutes = Math.floor(time / 60);
+        let seconds = time % 60;
+
+        document.getElementById("timer").innerText =
+            `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+
+        if (time > 0) {
+            time--;
+        } else {
+            clearInterval(timerInterval);
+            alert("Time's up! Task completed 🎉");
+        }
+    }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    time = 25 * 60;
+    document.getElementById("timer").innerText = "25:00";
+    document.getElementById("taskDisplay").innerText = "";
+}
+</script>
+
+</body>
+</html>
